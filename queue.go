@@ -27,7 +27,7 @@ func (q *Queue) Dequeue() Item {
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
-	if len(q.items) == 0 {
+	if q.IsEmpty() {
 		fmt.Println("the queue is empty")
 
 		return nil
@@ -37,4 +37,10 @@ func (q *Queue) Dequeue() Item {
 	q.items = q.items[1:]
 
 	return item
+}
+
+// IsEmpty returns true if there are no items in the queue.
+// It returns false otherwise.
+func (q *Queue) IsEmpty() bool {
+	return len(q.items) == 0
 }
