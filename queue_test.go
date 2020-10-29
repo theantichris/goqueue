@@ -7,27 +7,44 @@ const (
 	item2 = "another thing"
 )
 
-func TestQueue(t *testing.T) {
-	t.Run("it enqueues and dequeues", func(t *testing.T) {
+func TestEnqueue(t *testing.T) {
+	t.Run("it enqueues items", func(t *testing.T) {
 		var queue Queue
 
 		queue.Enqueue(item1)
 		queue.Enqueue(item2)
 
-		item := queue.Dequeue()
-
-		if item != item1 {
-			t.Errorf("got %s want %s", item, item1)
+		if queue.items[0] != item1 {
+			t.Errorf("got %s want %s", queue.items[0], item1)
 		}
 
-		item = queue.Dequeue()
+		if queue.items[1] != item2 {
+			t.Errorf("got %s want %s", queue.items[1], item2)
+		}
+	})
+}
 
-		if item != item2 {
-			t.Errorf("got %s want %s", item, item2)
+func TestDequeue(t *testing.T) {
+	t.Run("it dequeues items", func(t *testing.T) {
+		var queue Queue
+
+		queue.Enqueue(item1)
+		queue.Enqueue(item2)
+
+		got := queue.Dequeue()
+
+		if got != item1 {
+			t.Errorf("got %v want %v", got, item1)
+		}
+
+		got = queue.Dequeue()
+
+		if got != item2 {
+			t.Errorf("got %v want %v", got, item2)
 		}
 	})
 
-	t.Run("it returns nil for empty dequeue", func(t *testing.T) {
+	t.Run("it returns nil for empty queue", func(t *testing.T) {
 		var queue Queue
 
 		item := queue.Dequeue()
@@ -36,7 +53,9 @@ func TestQueue(t *testing.T) {
 			t.Errorf("got %v want %v", item, nil)
 		}
 	})
+}
 
+func TestReset(t *testing.T) {
 	t.Run("it resets the queue", func(t *testing.T) {
 		var queue Queue
 
@@ -53,7 +72,9 @@ func TestQueue(t *testing.T) {
 			t.Error("queue did not reset")
 		}
 	})
+}
 
+func TestDump(t *testing.T) {
 	t.Run("it dumps the stack", func(t *testing.T) {
 		var queue Queue
 
@@ -72,6 +93,33 @@ func TestQueue(t *testing.T) {
 
 		if got[1] != want[1] {
 			t.Errorf("got %v want %v", got[1], want[1])
+		}
+	})
+}
+
+func TestPeek(t *testing.T) {
+	t.Run("it returns the first item", func(t *testing.T) {
+		t.Run("it returns the first item in the queue", func(t *testing.T) {
+			var queue Queue
+
+			queue.Enqueue(item1)
+			queue.Enqueue(item2)
+
+			if queue.Peek() != item1 {
+				t.Errorf("got %v want %v", queue.Peek(), item1)
+			}
+
+			if queue.Peek() != item1 {
+				t.Errorf("got %v want %v", queue.Peek(), item1)
+			}
+		})
+	})
+
+	t.Run("it returns nil if the queue is empty", func(t *testing.T) {
+		var queue Queue
+
+		if queue.Peek() != nil {
+			t.Errorf("got %v want %v", queue.Peek(), nil)
 		}
 	})
 }

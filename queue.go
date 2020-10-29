@@ -63,3 +63,17 @@ func (q *Queue) Dump() []Item {
 
 	return copied
 }
+
+// Peek returns the first item in the queue but does not remove it.
+func (q *Queue) Peek() Item {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	if q.IsEmpty() {
+		fmt.Println("the queue is empty")
+
+		return nil
+	}
+
+	return q.items[0]
+}
