@@ -44,3 +44,22 @@ func (q *Queue) Dequeue() Item {
 func (q *Queue) IsEmpty() bool {
 	return len(q.items) == 0
 }
+
+// Reset removes all items from the queue
+func (q *Queue) Reset() {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	q.items = nil
+}
+
+// Dump returns all the items in the queue.
+func (q *Queue) Dump() []Item {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	var copied = make([]Item, len(q.items))
+	copy(copied, q.items)
+
+	return copied
+}
