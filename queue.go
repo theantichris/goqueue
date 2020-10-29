@@ -29,6 +29,7 @@ func (q *Queue) Dequeue() Item {
 
 	if len(q.items) == 0 {
 		fmt.Println("the queue is empty")
+
 		return nil
 	}
 
